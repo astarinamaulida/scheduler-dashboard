@@ -11,6 +11,7 @@ import {
   getMostPopularDay,
   getInterviewsPerDay
  } from "helpers/selectors";
+ import { setInterview } from "helpers/reducers";
 
  const data = [
   {
@@ -68,7 +69,19 @@ class Dashboard extends Component {
         interviewers: interviewers.data
       });
     });
+    
     this.socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    // To listen for messages on the socket connection and use them to update the state when we book or cancel an interview
+    // Converts the string data to JavaScript data types
+    this.socket.onmessage = event => {
+      const data = JSON.parse(event.data);
+    
+      if (typeof data === "object" && data.type === "SET_INTERVIEW") {
+        this.setState(previousState =>
+          setInterview(previousState, data.id, data.interview)
+        );
+      }
+    };
   }
 
   // JSON.stringify to convert our values before writing them to the localStorage
@@ -78,6 +91,7 @@ class Dashboard extends Component {
     }
   }
 
+  // Close the socket using the instance variable that holds the reference to the connection
   componentWillUnmount() {
     this.socket.close();
   }
