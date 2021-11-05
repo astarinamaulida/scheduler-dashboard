@@ -68,6 +68,7 @@ class Dashboard extends Component {
         interviewers: interviewers.data
       });
     });
+    this.socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
   }
 
   // JSON.stringify to convert our values before writing them to the localStorage
@@ -75,6 +76,10 @@ class Dashboard extends Component {
     if (previousState.focused !== this.state.focused) {
       localStorage.setItem("focused", JSON.stringify(this.state.focused));
     }
+  }
+
+  componentWillUnmount() {
+    this.socket.close();
   }
 
   render() {
@@ -99,7 +104,7 @@ class Dashboard extends Component {
         <Panel
           key={panel.id}
           label={panel.label}
-          value={panel.value}
+          value={panel.getValue(this.state)}
           onSelect={event => this.selectPanel(panel.id)}
         />
       ));
