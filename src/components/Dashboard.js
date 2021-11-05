@@ -32,7 +32,7 @@ class Dashboard extends Component {
     loading: false
   };
 
-  selectPanel(id) {
+  selectPanel = id => {
     this.setState({
      focused: id
     });
