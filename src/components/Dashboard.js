@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import classnames from "classnames";
 import Loading from "./Loading";
+import Panel from "./Panel";
 
 const data = [
   {
@@ -27,15 +28,44 @@ const data = [
 ];
 
 class Dashboard extends Component {
-  state = {loading: true}
+  state = {
+    loading: false
+  };
+
+  selectPanel(id) {
+    this.setState({
+     focused: id
+    });
+   }
+
   render() {
-    const dashboardClasses = classnames("dashboard");
+    const dashboardClasses = classnames("dashboard", {
+      "dashboard--focused": this.state.focused
+     });
 
     if (this.state.loading) {
-      return <Loading/>;
+      return <Loading />;
     }
 
-    return <main className={dashboardClasses} />;
+    const panels = data
+    // To filter panel data before converting it to components
+    // If this.state.focused is null then return true for every panel
+    // If this.state.focused is equal to the Panel, then let it through the filter
+    .filter(
+      panel => this.state.focused === null || this.state.focused === panel.id)
+
+    // Map over the data array and create a new Panel for each of the four data objects
+    // Render the panels array as children of the main element
+    .map(panel => (
+      <Panel
+        key={panel.id}
+        id={panel.id}
+        label={panel.label}
+        value={panel.value}
+      />
+    ));
+
+    return <main className={dashboardClasses}>{panels}</main>;
   }
 }
 
