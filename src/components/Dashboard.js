@@ -38,6 +38,21 @@ class Dashboard extends Component {
     }));
   }
 
+  componentDidMount() {
+    const focused = JSON.parse(localStorage.getItem("focused"));
+
+    if (focused) {
+      this.setState({ focused });
+    }
+  }
+
+  // JSON.stringify to convert our values before writing them to the localStorage
+  componentDidUpdate(previousProps, previousState) {
+    if (previousState.focused !== this.state.focused) {
+      localStorage.setItem("focused", JSON.stringify(this.state.focused));
+    }
+  }
+
   render() {
     const dashboardClasses = classnames("dashboard", {
       "dashboard--focused": this.state.focused
