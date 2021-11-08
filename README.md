@@ -1,6 +1,6 @@
 # Interview Scheduler Dashboard
 
-The Scheduler Dashboard is a one-page dashboard to summarize the Interview Scheduler project (https://github.com/astarinamaulida/scheduler).
+The Scheduler Dashboard is a one-page dashboard to summarize the Interview Scheduler project https://github.com/astarinamaulida/scheduler.
 
 ## Demo
 
