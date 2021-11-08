@@ -71,8 +71,11 @@ class Dashboard extends Component {
     });
     
     this.socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    
     // To listen for messages on the socket connection and use them to update the state when we book or cancel an interview
     // Converts the string data to JavaScript data types
+    // If the data is an object with the correct type, then we update the state
+    // We use a setInterview helper function to convert the state using the id and interview values
     this.socket.onmessage = event => {
       const data = JSON.parse(event.data);
     
